@@ -27,8 +27,11 @@ const botName = 'ChatCord Bot';
 // Run when client connects, listens for connections to chat
 io.on('connection', socket => {
   console.log('new websocket connection / client connected')
-
+  console.log(socket.id)
   socket.on('joinRoom', ({ username, room }) => {
+    //console.log(socket.id);
+    io.to(socket.id).emit('joinRoom', username+' your room is:'+room); 
+   
     //we use id of socket. we want room user joins which comes from url same iwth username
     //id we are using is id of socket
     const user = userJoin(socket.id, username, room);
@@ -43,10 +46,10 @@ io.on('connection', socket => {
     //formatmessage. format is username(botname), message, and than time
     //format message function takes in username and text (botname, welcome to chatcord)
     socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'));
-    console.log('sending pm')
-const pm = 'shh private message'
-    io.to(socket.id).emit('private',pm)
-    console.log('pm sent')
+    
+  //  console.log('sending pm')
+//const pm = 'shh private message'
+//    console.log('pm sent')
     // Broadcast when a user connects
     //this emits to everyone except user that is connected 
     // io.emit() broadcasts to all clients
