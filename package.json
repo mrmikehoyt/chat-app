@@ -31,7 +31,10 @@
     "extends": [
       "react-app",
       "airbnb"
-    ]
+    ],
+    "rules": {
+      "linebreak-style": "off"
+    }
   },
   "browserslist": {
     "production": [
