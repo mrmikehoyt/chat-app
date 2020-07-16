@@ -31,7 +31,9 @@ io.on('connection', socket => {
   socket.on('joinRoom', ({ username, room }) => {
     //console.log(socket.id);
     io.to(socket.id).emit('joinRoom', username+' your room is:'+room); 
-   
+    //very simple private messaging only setup on server side code and message is logged to console
+    io.to(socket.id).emit(console.log('whoa private messaging works'))
+    //above is very simple private messaging
     //we use id of socket. we want room user joins which comes from url same iwth username
     //id we are using is id of socket
     const user = userJoin(socket.id, username, room);
