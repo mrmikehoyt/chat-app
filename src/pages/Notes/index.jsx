@@ -5,8 +5,11 @@ import {
   Typography,
   Grid,
   Box,
+  GridList,
+  GridListTile,
 } from '@material-ui/core';
 import Header from '../../components/Header';
+import NoteCard from '../../components/NoteCard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +44,16 @@ function NotesPage() {
               <Typography variant="h6" className={classes.title} color="primary">
                 My notes
               </Typography>
+
+              <div>
+                <GridList cellHeight="auto" cols={2} spacing={20}>
+                  {notes.map((note, i) => (
+                    <GridListTile key={note.id} cols={note.cols || 1}>
+                      <NoteCard title={`Title ${i}`} message={`Message ${i}`} />
+                    </GridListTile>
+                  ))}
+                </GridList>
+              </div>
             </Grid>
           </Grid>
         </div>
