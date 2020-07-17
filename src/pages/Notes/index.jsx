@@ -22,6 +22,15 @@ const useStyles = makeStyles((theme) => ({
 function NotesPage() {
   const classes = useStyles();
 
+  // WIP Data
+  const notes = [...new Array(40)]
+    .map(
+      (value, i) => [{
+        id: i,
+        message: `Test ${i}`,
+      }],
+    );
+
   return (
     <div>
       <Header title="Notes" />
