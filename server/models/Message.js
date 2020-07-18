@@ -7,4 +7,11 @@ const messageSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-module.exports = mongoose.model('Message', messageSchema);
+const Chat = mongoose.model('Message', messageSchema);
+
+const newMsg = new Chat({ messageSchema });
+newMsg.save((err) => {
+  if (err) throw err;
+});
+
+module.exports = Chat;
