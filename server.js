@@ -1,17 +1,32 @@
+/* eslint-disable prefer-arrow-callback */
+/* eslint-disable func-names */
+/* eslint-disable space-before-blocks */
+/* eslint-disable semi */
+/* eslint-disable no-multiple-empty-lines */
+/* eslint-disable max-len */
+/* eslint-disable no-trailing-spaces */
+/* eslint-disable no-console */
+/* eslint-disable indent */
+/* eslint-disable arrow-parens */
+/* eslint-disable comma-dangle */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable spaced-comment */
 const path = require('path');
 //used by express under hood, needed for socket.io
 const http = require('http');
 const express = require('express');
+
 //for chat
 const socketio = require('socket.io');
-const formatMessage = require('./utils/messages');
+const formatMessage = require('./server/Message');
+
 //importing functions / modules from utils /users
 const {
   userJoin,
   getCurrentUser,
   userLeave,
   getRoomUsers
-} = require('./utils/users');
+} = require('./server/users');
 
 const app = express();
 //needed for socket.io
@@ -45,7 +60,7 @@ io.on('connection', socket => {
     socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'));
     console.log('sending pm')
 const pm = 'shh private message'
-    io.to(socket.id).emit('private',pm)
+    io.to(socket.id).emit('private', pm)
     console.log('pm sent')
     // Broadcast when a user connects
     //this emits to everyone except user that is connected 
