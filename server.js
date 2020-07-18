@@ -17,7 +17,6 @@ const io = socketio(server);
 app.use(express.static(path.join(__dirname, 'public')));
 const botName = 'ChatCord Bot';
 
-// Run when client connects, listens for connections to chat
 io.on('connection', (socket) => {
   console.log('new websocket connection / client connected');
 
@@ -63,7 +62,6 @@ io.on('connection', (socket) => {
     });
   });
 
-  // Listen for chatMessage that user types in chat box
   socket.on('chatMessage', (msg) => {
     // this console logs to server message user types in chat
     console.log(msg);
@@ -75,7 +73,6 @@ io.on('connection', (socket) => {
     io.to(user.room).emit('message', formatMessage(user.username, msg));
   });
 
-  // Runs when client disconnects
   socket.on('disconnect', () => {
     // need to know which user left thats why declaring
     const user = userLeave(socket.id);
