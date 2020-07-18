@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-console */
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
