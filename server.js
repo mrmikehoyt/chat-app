@@ -3,7 +3,7 @@ const express = require('express');
 const socketio = require('socket.io');
 const path = require('path');
 const mongoose = require('mongoose');
-const formatMessage = require('./server/Message');
+const formatMessage = require('./server/models/Message');
 const {
   userJoin,
   getCurrentUser,
