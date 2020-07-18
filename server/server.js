@@ -3,13 +3,13 @@ const express = require('express');
 const socketio = require('socket.io');
 const path = require('path');
 const mongoose = require('mongoose');
-const formatMessage = require('./server/models/Message');
+const formatMessage = require('./models/Message');
 const {
   userJoin,
   getCurrentUser,
   userLeave,
   getRoomUsers,
-} = require('./server/utils/users');
+} = require('./utils/users');
 
 const app = express();
 const server = http.createServer(app);
