@@ -112,6 +112,7 @@ function Header(props) {
           </Toolbar>
         </AppBar>
       </HideOnScroll>
+      <Toolbar />
     </div>
   );
 }
