@@ -18,11 +18,11 @@
     "typeface-poppins": "0.0.72"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint src"
+    "start": "npm run client",
+    "build": "cd client && npm run build",
+    "lint": "eslint client/src",
+    "server": "cd server && node server.js",
+    "client": "cd client && npm run start"
   },
   "husky": {
     "hooks": {

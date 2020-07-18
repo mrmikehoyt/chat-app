@@ -1,25 +1,31 @@
-/* eslint-disable max-len */
-/* eslint-disable no-console */
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 const path = require('path');
-const formatMessage = require('./server/Message');
+const mongoose = require('mongoose');
+const formatMessage = require('./models/Message');
 const {
   userJoin,
   getCurrentUser,
   userLeave,
   getRoomUsers,
-} = require('./server/users');
+} = require('./utils/users');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/workout', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
+});
+
 const botName = 'ChatCord Bot';
 
-// Run when client connects, listens for connections to chat
 io.on('connection', (socket) => {
   console.log('new websocket connection / client connected');
 
@@ -65,7 +71,6 @@ io.on('connection', (socket) => {
     });
   });
 
-  // Listen for chatMessage that user types in chat box
   socket.on('chatMessage', (msg) => {
     // this console logs to server message user types in chat
     console.log(msg);
@@ -77,7 +82,6 @@ io.on('connection', (socket) => {
     io.to(user.room).emit('message', formatMessage(user.username, msg));
   });
 
-  // Runs when client disconnects
   socket.on('disconnect', () => {
     // need to know which user left thats why declaring
     const user = userLeave(socket.id);
@@ -102,6 +106,6 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
