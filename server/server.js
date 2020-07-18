@@ -17,12 +17,11 @@ const io = socketio(server);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('mongodb://localhost/chat', (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('connected to database');
-  }
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/workout', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true,
 });
 
 const botName = 'ChatCord Bot';
