@@ -2,6 +2,7 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 const path = require('path');
+const mongoose = require('mongoose');
 const formatMessage = require('./server/Message');
 const {
   userJoin,
@@ -15,6 +16,15 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+mongoose.connect('mongodb://localhost/chat', (err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('connected to database');
+  }
+});
+
 const botName = 'ChatCord Bot';
 
 io.on('connection', (socket) => {
