@@ -7,7 +7,11 @@ import {
   Box,
   GridList,
   GridListTile,
+  IconButton,
 } from '@material-ui/core';
+import {
+  Add,
+} from '@material-ui/icons';
 import Header from '../../components/Header';
 import NoteCard from '../../components/NoteCard';
 
@@ -17,8 +21,14 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 752,
     marginBottom: 100,
   },
-  title: {
-    margin: theme.spacing(4, 0, 2),
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: theme.spacing(2, 0, 2),
+  },
+  icon: {
+    height: 'fit-content',
   },
 }));
 
@@ -30,6 +40,7 @@ function NotesPage() {
     .map(
       (value, i) => [{
         id: i,
+        title: `Title ${i}`,
         message: `Test ${i}`,
       }],
     );
@@ -41,9 +52,14 @@ function NotesPage() {
         <div className={classes.root}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={12}>
-              <Typography variant="h6" className={classes.title} color="primary">
-                My notes
-              </Typography>
+              <div className={classes.header}>
+                <Typography variant="h6">
+                  My notes
+                </Typography>
+                <IconButton aria-label="add an note" color="secondary">
+                  <Add />
+                </IconButton>
+              </div>
 
               <div>
                 <GridList cellHeight="auto" cols={2} spacing={20}>
