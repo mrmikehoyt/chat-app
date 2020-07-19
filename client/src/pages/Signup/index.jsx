@@ -8,7 +8,7 @@ import {
   Grid,
   Typography,
   Container,
-  Link,
+  Box,
   makeStyles,
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {
+  button: {
     margin: theme.spacing(3, 0, 2),
   },
 }));
@@ -51,7 +51,7 @@ export default function SignUp() {
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
-            variant="outlined"
+            variant="filled"
             margin="normal"
             required
             fullWidth
@@ -62,7 +62,7 @@ export default function SignUp() {
             autoFocus
           />
           <TextField
-            variant="outlined"
+            variant="filled"
             margin="normal"
             required
             fullWidth
@@ -72,21 +72,26 @@ export default function SignUp() {
             id="password"
             autoComplete="current-password"
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
           <Grid container>
-            <Grid item>
-              <Link component={rLink} to="/login">
-                Have an account? Login
-              </Link>
-            </Grid>
+            <Box display="flex" justifyContent="space-between" flexGrow={1}>
+              <Button
+                component={rLink}
+                to="/login"
+                color="primary"
+                variant="contained"
+                className={classes.button}
+              >
+                Login
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.button}
+              >
+                Sign Up
+              </Button>
+            </Box>
           </Grid>
         </form>
       </div>
