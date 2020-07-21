@@ -27,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/chatapp', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 }, (error) => {
   if (error) throw error;
   console.log('MongoDB connection created');
