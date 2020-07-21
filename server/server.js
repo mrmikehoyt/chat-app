@@ -13,6 +13,7 @@ const {
   userLeave,
   getRoomUsers,
 } = require('./utils/users');
+const routes = require('./routes');
 
 const app = express();
 const server = http.createServer(app);
@@ -28,6 +29,8 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   app.use(express.static(path.join(__dirname, 'public')));
 }
+
+app.use(routes);
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/chatapp', {
   useNewUrlParser: true,
