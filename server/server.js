@@ -1,8 +1,8 @@
+require('dotenv').config();
 const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const logger = require('morgan');
-
 const socketio = require('socket.io');
 const path = require('path');
 const mongoose = require('mongoose');
