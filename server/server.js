@@ -22,7 +22,12 @@ app.use(logger('dev'));
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+} else {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/chatapp', {
   useNewUrlParser: true,
