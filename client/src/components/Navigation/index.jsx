@@ -32,9 +32,9 @@ function Navigation() {
     <BottomNavigation value={value} onChange={handleChange} className={classes.root} showLabels>
       <BottomNavigationAction
         component={Link}
-        to="/"
-        label="Home"
-        value="home"
+        to="/dashboard"
+        label="Dashboard"
+        value="dashboard"
         icon={<Home />}
       />
       <BottomNavigationAction
