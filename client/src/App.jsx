@@ -7,6 +7,7 @@ import theme from './theme';
 import store from './store';
 import { loadUser } from './actions/authActions';
 
+import PrivateRoute from './components/PrivateRoute';
 import Login from './pages/Login';
 import SignUp from './pages/Signup';
 import Notes from './pages/Notes';
@@ -28,8 +29,8 @@ function App() {
               <Route exact path="/" component={Login} />
               <Route path="/login" component={Login} />
               <Route path="/signup" component={SignUp} />
-              <Route path="/dashboard" component={Dashboard} />
-              <Route path="/notes" component={Notes} />
+              <PrivateRoute path="/dashboard" component={Dashboard} />
+              <PrivateRoute path="/notes" component={Notes} />
             </Switch>
             <Navigation />
           </div>
