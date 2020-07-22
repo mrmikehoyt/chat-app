@@ -2,7 +2,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const db = require('../../models');
+const { User } = require('../../models');
 
 const router = express.Router();
 
@@ -14,35 +14,35 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Invalid fields' });
   }
 
-  const user = await db.User.findOne({ email });
+  try {
+    const user = await User.findOne({ email });
 
-  if (!user) {
-    return res.status(400).json({ error: 'User does not exist' });
-  }
+    if (!user) {
+      return res.status(400).json({ error: 'User does not exist' });
+    }
 
-  // Validate password
-  bcrypt.compare(password, user.password)
-    .then((isMatch) => {
-      if (!isMatch) {
-        return res.status(400).json({ error: 'Invalid credentials' });
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(400).json({ error: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+    if (!token) {
+      throw Error('JWT ERROR: Unable to sign new token');
+    }
+
+    res.status(200).json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email
       }
+    })
 
-      jwt.sign(
-        { id: user.id },
-        process.env.JWT_SECRET,
-        (error, token) => {
-          if (error) throw error;
-          res.json({
-            token,
-            user: {
-              id: user.id,
-              name: user.name,
-              email: user.email,
-            },
-          });
-        },
-      );
-    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
 module.exports = router;

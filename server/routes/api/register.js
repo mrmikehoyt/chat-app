@@ -2,7 +2,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const db = require('../../models');
+const { User } = require('../../models');
 
 const router = express.Router();
 
@@ -14,45 +14,43 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Invalid fields' });
   }
 
-  const user = await db.User.findOne({ email });
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ error: 'User already exist' });
+    }
 
-  if (user) {
-    return res.status(400).json({ error: 'User already exist' });
-  }
+    const salt = await bcrypt.genSalt(10);
+    if (!salt) {
+      throw Error('BCRYPT ERROR: Unable to create salt');
+    }
 
-  const newUser = new db.User({
-    name,
-    email,
-    password,
-  });
+    const hash = await bcrypt.hash(password, salt)
+    if (!hash) {
+      throw Error('BCRYPT ERROR: Unable to hash password');
+    }
 
-  bcrypt.genSalt(10, (error, salt) => {
-    if (error) throw error;
-    bcrypt.hash(newUser.password, salt, (error, hash) => {
-      if (error) throw error;
-
-      newUser.password = hash;
-      newUser
-        .save()
-        .then((user) => {
-          jwt.sign(
-            { id: user.id },
-            process.env.JWT_SECRET,
-            (error, token) => {
-              if (error) throw error;
-              res.json({
-                token,
-                user: {
-                  id: user.id,
-                  name: user.name,
-                  email: user.email,
-                },
-              });
-            },
-          );
-        });
+    const newUser = new User({
+      name,
+      email,
+      password: hash,
     });
-  });
+
+    const savedUser = await newUser.save()
+    const token = jwt.sign({id: savedUser.id}, process.env.JWT_SECRET );
+
+    res.status(200).json({
+      token,
+      user: {
+        id: savedUser.id,
+        name: savedUser.name,
+        email: savedUser.email
+      }
+    })
+
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
 });
 
 module.exports = router;
