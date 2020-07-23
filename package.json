@@ -3,32 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.25",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "socket.io": "^2.3.0",
-    "typeface-poppins": "0.0.72"
+    "morgan": "^1.10.0",
+    "socket.io": "^2.3.0"
   },
   "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
     "start": "npm run client",
     "build": "cd client && npm run build",
-    "lint": "eslint client/src",
     "server": "cd server && node server.js",
-    "client": "cd client && npm run start"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run lint"
-    }
+    "client": "cd client && npm run start",
+    "install": "cd client && npm install",
+    "heroku-postbuild": "npm run build"
   },
   "eslintConfig": {
     "extends": [
@@ -37,6 +28,7 @@
     ],
     "rules": {
       "linebreak-style": "off",
+      "no-console": "off",
       "react/prop-types": "off",
       "react/jsx-props-no-spreading": "off"
     }
@@ -54,7 +46,11 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^5.2.0",
     "eslint-config-airbnb": "^18.2.0",
-    "husky": "^4.2.5"
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jsx-a11y": "^6.3.0",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.0"
   }
 }

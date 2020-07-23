@@ -1,111 +1,38 @@
-const http = require('http');
+require('dotenv').config();
 const express = require('express');
-const socketio = require('socket.io');
-const path = require('path');
+const cors = require('cors');
+const morgan = require('morgan');
 const mongoose = require('mongoose');
-const formatMessage = require('./models/Message');
-const {
-  userJoin,
-  getCurrentUser,
-  userLeave,
-  getRoomUsers,
-} = require('./utils/users');
+const path = require('path');
+
+const routes = require('./routes');
 
 const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/workout', {
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+} else {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
+
+app.use(routes);
+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/chatapp', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useFindAndModify: false,
   useCreateIndex: true,
+}, (error) => {
+  if (error) throw error;
+  console.log('MongoDB connection created');
 });
 
-const botName = 'ChatCord Bot';
-
-io.on('connection', (socket) => {
-  console.log('new websocket connection / client connected');
-
-  socket.on('joinRoom', ({ username, room }) => {
-    // we use id of socket. we want room user joins which comes from url same iwth username
-    // id we are using is id of socket
-    const user = userJoin(socket.id, username, room);
-    // because were using rooms socket.join user.room socket.emit welcome message
-    // socket.broadcast to.user.room .emit message has joined, and io to user.room emit
-    // room users is under  socket.on join room
-    // this joins the room based of the room that was specified url
-    socket.join(user.room);
-
-    // Welcome current user message can be called whatever, message welcome to chatcord
-    // this is displayed when user joins chat only displayed for one user
-    // formatmessage. format is username(botname), message, and than time
-    // format message function takes in username and text (botname, welcome to chatcord)
-    socket.emit('message', formatMessage(botName, 'Welcome to ChatCord!'));
-    console.log('sending pm');
-    const pm = 'shh private message';
-    io.to(socket.id).emit('private', pm);
-    console.log('pm sent');
-    // Broadcast when a user connects
-    // this emits to everyone except user that is connected
-    // io.emit() broadcasts to all clients
-    // broadcast.to(user.room) emits to certain room
-    socket.broadcast
-      .to(user.room)
-      .emit(
-        'message',
-        // cause we have access to user.username we are able to have it say the usersname joined chat
-        formatMessage(botName, `${user.username} has joined the chat`),
-      );
-
-    // Send users and room info
-    // this populates when user joins chat because of how it's nested
-    // sends only to room user is in . called roomusers
-    io.to(user.room).emit('roomUsers', {
-      // room is object of users in the room *user.room
-      room: user.room,
-      // sends all users in room
-      users: getRoomUsers(user.room),
-    });
-  });
-
-  socket.on('chatMessage', (msg) => {
-    // this console logs to server message user types in chat
-    console.log(msg);
-    // gets user by socket.id
-    const user = getCurrentUser(socket.id);
-    // snds message to room user joined .msg sent from server. msg is only
-    // emitted / sent to room user joins and shows the name of the user when messages are sent from user
-    // formatmessage msg ensures that username, time, and text is sent
-    io.to(user.room).emit('message', formatMessage(user.username, msg));
-  });
-
-  socket.on('disconnect', () => {
-    // need to know which user left thats why declaring
-    const user = userLeave(socket.id);
-    // this checks for user
-    if (user) {
-      // this emits to all users that user left chat . user.username is user
-      // message is what is needed for the user has left the chat to be console logged refer to frontend code because message is being consoled logged in frontend code
-      // io.to(user.room) ensures message is only sent to room
-      // format message says user has left change
-      io.to(user.room).emit(
-        'message',
-        formatMessage(botName, `${user.username} has left the chat`),
-      );
-
-      // Send users and room info
-      // same as comments under line 59 however this is for if they leave chat
-      io.to(user.room).emit('roomUsers', {
-        room: user.room,
-        users: getRoomUsers(user.room),
-      });
-    }
-  });
-});
+app.use(routes);
 
 const PORT = process.env.PORT || 3001;
 
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
