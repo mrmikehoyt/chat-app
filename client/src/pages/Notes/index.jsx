@@ -16,6 +16,7 @@ import {
   Add,
 } from '@material-ui/icons';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import NoteCard from '../../components/NoteCard';
 import { getNotes, deleteNote } from '../../actions/noteActions';
@@ -67,7 +68,7 @@ function NotesPage({
                 <Typography variant="h6">
                   My notes
                 </Typography>
-                <IconButton aria-label="add an note" color="secondary">
+                <IconButton aria-label="add an note" color="secondary" component={Link} to="/addnote">
                   <Add />
                 </IconButton>
               </div>

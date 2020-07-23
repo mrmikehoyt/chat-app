@@ -11,6 +11,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Login from './pages/Login';
 import SignUp from './pages/Signup';
 import Notes from './pages/Notes';
+import NoteCreation from './pages/NoteCreation';
 import Dashboard from './pages/Dashboard';
 import Navigation from './components/Navigation';
 
@@ -31,6 +32,7 @@ function App() {
               <Route path="/signup" component={SignUp} />
               <PrivateRoute path="/dashboard" component={Dashboard} />
               <PrivateRoute path="/notes" component={Notes} />
+              <PrivateRoute path="/addnote" component={NoteCreation} />
             </Switch>
             <Navigation />
           </div>
