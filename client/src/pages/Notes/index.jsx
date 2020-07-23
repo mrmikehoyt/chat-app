@@ -74,8 +74,8 @@ function NotesPage({
 
               <div>
                 <GridList cellHeight="auto" cols={2} spacing={20}>
-                  {notes.map(({ id, title, content }) => (
-                    <GridListTile key={id}>
+                  {notes.map(({ _id, title, content }) => (
+                    <GridListTile key={_id}>
                       <NoteCard title={title} message={content} />
                     </GridListTile>
                   ))}
