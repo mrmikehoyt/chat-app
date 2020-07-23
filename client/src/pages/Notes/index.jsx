@@ -1,5 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   makeStyles,
   Typography,
@@ -12,8 +15,10 @@ import {
 import {
   Add,
 } from '@material-ui/icons';
+import { connect } from 'react-redux';
 import Header from '../../components/Header';
 import NoteCard from '../../components/NoteCard';
+import { getNotes, deleteNote } from '../../actions/noteActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,18 +37,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NotesPage() {
+function NotesPage({
+  getNotes,
+  item,
+  isAuthenticated,
+  deleteNote,
+}) {
   const classes = useStyles();
 
-  // WIP Data
-  const notes = [...new Array(40)]
-    .map(
-      (value, i) => [{
-        id: i,
-        title: `Title ${i}`,
-        message: `Test ${i}`,
-      }],
-    );
+  useEffect(() => {
+    getNotes();
+  }, [getNotes]);
+
+  // Ensure that notes is undefined
+  let notes = [];
+
+  if (typeof item !== 'undefined') {
+    notes = item;
+  }
 
   return (
     <div>
@@ -63,9 +74,9 @@ function NotesPage() {
 
               <div>
                 <GridList cellHeight="auto" cols={2} spacing={20}>
-                  {notes.map((note, i) => (
-                    <GridListTile key={note.id} cols={note.cols || 1}>
-                      <NoteCard title={`Title ${i}`} message={`Message ${i}`} />
+                  {notes.map(({ id, title, content }) => (
+                    <GridListTile key={id}>
+                      <NoteCard title={title} message={content} />
                     </GridListTile>
                   ))}
                 </GridList>
@@ -78,4 +89,9 @@ function NotesPage() {
   );
 }
 
-export default NotesPage;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  item: state.item.notes.notes,
+});
+
+export default connect(mapStateToProps, { getNotes, deleteNote })(NotesPage);
