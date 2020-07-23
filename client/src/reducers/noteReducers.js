@@ -27,7 +27,7 @@ export default function (state = initialState, action) {
     case ADD_NOTE:
       return {
         ...state,
-        notes: [action.payload, ...state.notes],
+        notes: [...state.notes.notes, action.payload],
       };
     case NOTES_LOADING:
       return {
