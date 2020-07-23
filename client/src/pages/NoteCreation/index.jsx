@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 /* eslint-disable react/no-array-index-key */
+/* eslint-disable no-restricted-globals */
 import React, { useState } from 'react';
 import {
   Card,
@@ -15,7 +16,7 @@ import {
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
-import { addNote, deleteNote } from '../../actions/noteActions';
+import { addNote } from '../../actions/noteActions';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -57,9 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 function NoteCreation({
   addNote,
-  item,
   isAuthenticated,
-  deleteNote,
 }) {
   const classes = useStyles();
   const [title, setTitle] = useState('');
@@ -74,6 +73,7 @@ function NoteCreation({
     };
 
     addNote(card);
+    location.reload();
   };
 
   return (
@@ -121,4 +121,4 @@ const mapStateToProps = (state) => ({
   item: state.item.notes.notes,
 });
 
-export default connect(mapStateToProps, { addNote, deleteNote })(NoteCreation);
+export default connect(mapStateToProps, { addNote })(NoteCreation);
