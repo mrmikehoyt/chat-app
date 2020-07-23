@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -12,7 +12,10 @@ import {
   TextField,
   makeStyles,
 } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
+import { addNote, deleteNote } from '../../actions/noteActions';
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -52,8 +55,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NotesPage() {
+function NoteCreation({
+  addNote,
+  item,
+  isAuthenticated,
+  deleteNote,
+}) {
   const classes = useStyles();
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const card = {
+      title,
+      content,
+    };
+
+    addNote(card);
+  };
 
   return (
     <div>
@@ -70,6 +91,7 @@ function NotesPage() {
                   id="title"
                   label="Title"
                   name="title"
+                  onChange={(e) => setTitle(e.target.value)}
                 />
                 <TextField
                   variant="outlined"
@@ -80,17 +102,23 @@ function NotesPage() {
                   name="content"
                   multiline
                   className={classes.content}
+                  onChange={(e) => setContent(e.target.value)}
                 />
               </CardContent>
               <CardActions className={classes.action}>
-                <Button variant="contained" color="secondary">Save</Button>
+                <Button variant="contained" color="secondary" onClick={handleSubmit}>Save</Button>
               </CardActions>
             </Card>
           </div>
         </div>
       </Box>
     </div>
-
   );
 }
-export default NotesPage;
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  item: state.item.notes.notes,
+});
+
+export default connect(mapStateToProps, { addNote, deleteNote })(NoteCreation);
