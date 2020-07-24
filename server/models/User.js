@@ -18,8 +18,14 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  notes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Note'
+    }
+  ],
 });
 
-const User = model('user', userSchema);
+const User = model('User', userSchema);
 
 module.exports = User;
