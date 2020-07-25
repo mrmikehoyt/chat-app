@@ -13,7 +13,7 @@ router.use('/api/register', registerRoute);
 router.use('/api/login', loginRoute);
 
 router.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'client', 'build'));
+  res.sendFile(path.join(__dirname, '..', '..', 'client', 'build', 'index.html'));
 });
 
 module.exports = router;
