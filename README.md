@@ -1,10 +1,9 @@
 # Chat App
-#
 ## With online interactions between consumers and business increasing at large rates, the delivering of top notch customer service has never been more important.  This is where the Business Chat App comes in to play.
 #
-![image](https://user-images.githubusercontent.com/60622571/88450348-56ddbd00-ce1c-11ea-8438-4947ab01ea23.png)
+![image](splashscreen.png)
 ## Try Ottawa's Finest Chat App Now!
-[Chat Now](https://fridaylate.herokuapp.com/)
+[Chat Now](https://blooming-shelf-17246.herokuapp.com/)
 ## This application uses Routes, Mongoose, MongoDB, nodeJS as well as Heroku
 # Built with
 ![alt_text](https://img.shields.io/badge/Technologies-Routes-green)
@@ -36,4 +35,4 @@
 9. Open your web browser and go to localhost:4000
 ## Alternate Instructions
 #
-1. visit https://fridaylate.herokuapp.com/ to run the application from heroku
+1. visit https://blooming-shelf-17246.herokuapp.com/ to run the application from heroku
