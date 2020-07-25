@@ -1,7 +1,6 @@
-/* eslint-disable import/extensions */
 import { createMuiTheme } from '@material-ui/core';
-import palette from './palette.js';
-import typography from './typography.js';
+import palette from './palette';
+import typography from './typography';
 import 'typeface-poppins';
 
 const theme = createMuiTheme({

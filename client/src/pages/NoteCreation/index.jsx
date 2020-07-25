@@ -1,7 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
-/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-restricted-globals */
 import React, { useState } from 'react';
 import {
@@ -14,7 +11,6 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import { addNote } from '../../actions/noteActions';
 
@@ -58,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
 
 function NoteCreation({
   addNote,
-  isAuthenticated,
 }) {
   const classes = useStyles();
   const [title, setTitle] = useState('');

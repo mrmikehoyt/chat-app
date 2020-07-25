@@ -13,6 +13,7 @@ import SignUp from './pages/Signup';
 import Notes from './pages/Notes';
 import NoteCreation from './pages/NoteCreation';
 import Dashboard from './pages/Dashboard';
+import Chat from './pages/Chat';
 import Navigation from './components/Navigation';
 
 function App() {
@@ -25,17 +26,16 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
-          <div>
-            <Switch>
-              <Route exact path="/" component={Login} />
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={SignUp} />
-              <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/notes" component={Notes} />
-              <PrivateRoute path="/addnote" component={NoteCreation} />
-            </Switch>
-            <Navigation />
-          </div>
+          <Switch>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={SignUp} />
+            <PrivateRoute exact path="/message" component={Chat} />
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute exact path="/notes" component={Notes} />
+            <PrivateRoute exact path="/addnote" component={NoteCreation} />
+            <PrivateRoute exact path="/" component={Dashboard} />
+          </Switch>
+          <Navigation />
         </Router>
       </ThemeProvider>
     </Provider>

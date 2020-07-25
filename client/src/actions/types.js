@@ -14,3 +14,9 @@ export const GET_NOTES = 'GET_NOTES';
 export const ADD_NOTE = 'ADD_NOTE';
 export const DELETE_NOTE = 'DELETE_NOTE';
 export const NOTES_LOADING = 'NOTES_LOADING';
+
+// Chat
+export const WS_RECEIVE_MESSAGE = 'WS_RECEIVE_MESSAGE';
+export const WS_SEND_MESSAGE = 'WS_SEND_MESSAGE';
+export const WS_SET_USERNAME_SUCCESS = 'WS_SET_USERNAME_SUCCESS';
+export const WS_SOCKET_ID = 'WS_SOCKET_ID';

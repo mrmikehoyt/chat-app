@@ -1,7 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
-/* eslint-disable react/no-array-index-key */
 import React, { useEffect } from 'react';
 import {
   makeStyles,
@@ -41,8 +38,6 @@ const useStyles = makeStyles((theme) => ({
 function NotesPage({
   getNotes,
   item,
-  isAuthenticated,
-  deleteNote,
 }) {
   const classes = useStyles();
 

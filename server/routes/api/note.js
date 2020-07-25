@@ -29,8 +29,6 @@ router.post('/', auth, async (req, res) => {
     const note = Note.create({ title, content });
     if (!note) throw Error('Unable to create user note');
 
-    console.log((await note));
-
     user.notes.push((await note).id);
     await user.save();
 
