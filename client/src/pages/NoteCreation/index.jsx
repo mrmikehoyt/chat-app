@@ -9,6 +9,7 @@ import {
   Button,
   TextField,
   makeStyles,
+  Typography,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Header from '../../components/Header';
@@ -30,12 +31,6 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingBottom: '100%',
   },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
   root: {
     position: 'absolute',
     top: 0,
@@ -48,7 +43,17 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
   },
   action: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(0, 4, 4, 0),
+    justifyContent: 'flex-end',
+  },
+  innerContainer: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  cardContent: {
+    padding: theme.spacing(4),
   },
 }));
 
@@ -73,36 +78,38 @@ function NoteCreation({
 
   return (
     <div>
-      <Header />
+      <Header title="Note Creation" />
       <Box className={classes.box}>
         <div className={classes.container}>
           <div className={classes.outerWrapper}>
             <Card className={classes.root} elevation={4}>
-              <CardContent>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  id="title"
-                  label="Title"
-                  name="title"
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  fullWidth
-                  id="content"
-                  label="Content"
-                  name="content"
-                  multiline
-                  className={classes.content}
-                  onChange={(e) => setContent(e.target.value)}
-                />
-              </CardContent>
-              <CardActions className={classes.action}>
-                <Button variant="contained" color="secondary" onClick={handleSubmit}>Save</Button>
-              </CardActions>
+              <div className={classes.innerContainer}>
+                <CardContent className={classes.cardContent}>
+                  <Typography variant="h4" gutterBottom>Create Your New Note:</Typography>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    id="title"
+                    label="Title"
+                    name="title"
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    id="content"
+                    label="Content"
+                    name="content"
+                    multiline
+                    onChange={(e) => setContent(e.target.value)}
+                  />
+                </CardContent>
+                <CardActions className={classes.action}>
+                  <Button variant="contained" color="primary" onClick={handleSubmit}>Save</Button>
+                </CardActions>
+              </div>
             </Card>
           </div>
         </div>
