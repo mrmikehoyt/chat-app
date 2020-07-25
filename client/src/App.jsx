@@ -26,18 +26,16 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
-          <div>
-            <Switch>
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={SignUp} />
-              <PrivateRoute exact path="/message" component={Chat} />
-              <PrivateRoute exact path="/dashboard" component={Dashboard} />
-              <PrivateRoute exact path="/notes" component={Notes} />
-              <PrivateRoute exact path="/addnote" component={NoteCreation} />
-              <PrivateRoute exact path="/" component={Dashboard} />
-            </Switch>
-            <Navigation />
-          </div>
+          <Switch>
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={SignUp} />
+            <PrivateRoute exact path="/message" component={Chat} />
+            <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute exact path="/notes" component={Notes} />
+            <PrivateRoute exact path="/addnote" component={NoteCreation} />
+            <PrivateRoute exact path="/" component={Dashboard} />
+          </Switch>
+          <Navigation />
         </Router>
       </ThemeProvider>
     </Provider>
