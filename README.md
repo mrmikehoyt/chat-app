@@ -29,7 +29,7 @@
 #
 6. Launch the command prompt or if you have gitbash installed launch gitbash
 #
-7. Under the directory where the workout tracker is run node ./seeders/seed.js to seed mongodb / mongoose
+7. Under the directory where the ChatApp is run node ./seeders/seed.js to seed mongodb / mongoose
 #
 8. Run node server.js
 #
