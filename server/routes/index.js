@@ -12,8 +12,8 @@ router.use('/api/user', userRoute);
 router.use('/api/register', registerRoute);
 router.use('/api/login', loginRoute);
 
-router.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+router.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', '..', 'client', 'build', 'index.html'));
 });
 
 module.exports = router;
