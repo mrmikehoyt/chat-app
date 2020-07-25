@@ -4,7 +4,7 @@
 ![image](splashscreen.png)
 ## Try Ottawa's Finest Chat App Now!
 [Chat Now](https://blooming-shelf-17246.herokuapp.com/)
-[Youtube Video](https://youtu.be/ZUagtDjCO4k)
+[Youtube Video](https://youtu.be/s7O4_GSDE1Y)
 ## This application uses Routes, Mongoose, MongoDB, nodeJS as well as Heroku
 # Built with
 ![alt_text](https://img.shields.io/badge/Technologies-Routes-green)
