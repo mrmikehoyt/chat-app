@@ -1,6 +1,5 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import {
   Avatar,
@@ -14,7 +13,7 @@ import {
   FormGroup,
   makeStyles,
 } from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import { Alert } from '@material-ui/lab';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Link as rLink } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -46,10 +45,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Login({
-  isAuthenticated,
   error,
   login,
-  clearErrors,
 }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
