@@ -1,36 +1,33 @@
-/* eslint-disable padded-blocks */
-/* eslint-disable consistent-return */
-/* eslint-disable arrow-parens */
 const users = [];
 
-function userJoin(id, username, room) {
-  const user = { id, username, room };
+const addUser = ({ id, name}) => {
+  name = name.trim().toLowerCase();
 
-  users.push(user);
+  const existingUser = users.find((user) => user.name === name);
 
-  return user;
-}
-
-function getCurrentUser(id) {
-  return users.find(user => user.id === id);
-}
-
-function userLeave(id) {
-  const index = users.findIndex(user => user.id === id);
-
-  if (index !== -1) {
-
-    return users.splice(index, 1)[0];
+  if (!name) {
+    return { error: 'Username are required.' };
   }
+
+  const user = { id, name };
+
+  if (!existingUser) {
+    users.push(user);
+  }
+
+  //return user  that was just added
+  return { user };
 }
 
-function getRoomUsers(room) {
-  return users.filter(user => user.room === room);
+const removeUser = (id) => {
+  const index = users.findIndex((user) => user.id === id);
+
+  if(index !== -1) return users.splice(index, 1)[0];
 }
 
-module.exports = {
-  userJoin,
-  getCurrentUser,
-  userLeave,
-  getRoomUsers,
-};
+const getUser = (id) => users.find((user) => user.id === id);
+const getAllUsers = () =>  (users);
+
+
+
+module.exports = { addUser, removeUser, getUser, getAllUsers };
