@@ -1,41 +1,91 @@
 import React from 'react';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
+import {
+  Container,
+  Typography,
+  Box,
+  Card,
+  CardContent,
+  Button,
+  makeStyles,
+} from '@material-ui/core';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Header from '../../components/Header';
 
-function Home() {
+const useStyles = makeStyles({
+  container: {
+    margin: '20px auto',
+  },
+  root: {
+    height: 400,
+  },
+  buttonContainer: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    height: '90%',
+    margin: '10px 0',
+  },
+  button: {
+    width: '100%',
+    height: '100%',
+    margin: '10px 0',
+    fontSize: '2.4rem',
+  },
+  cardContent: {
+    height: '100%',
+  },
+});
+
+function Home({
+  username,
+}) {
+  const classes = useStyles();
   return (
-    <Container maxWidth="sm">
-      <Box my={4}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Create React App v4-beta example
-        </Typography>
-        <Card>
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Header
-            </Typography>
-            <Typography variant="h5" component="h2">
-              Testing
-            </Typography>
-            <Typography color="textSecondary">
-              Example 2
-            </Typography>
-            <Typography variant="body2" component="p">
-              paragraph
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button size="small">Learn More</Button>
-          </CardActions>
-        </Card>
-      </Box>
-    </Container>
+    <>
+      <Header title="Dashboard" />
+      <Container maxWidth="md" className={classes.container}>
+        <Box>
+          <Typography variant="h4" component="h1" gutterBottom>
+            {`Welcome back ${username}!`}
+          </Typography>
+          <Card className={classes.root}>
+            <CardContent className={classes.cardContent}>
+              <Typography variant="h5">Where would you like to go?</Typography>
+              <div className={classes.buttonContainer}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component={Link}
+                  to="/message"
+                  className={classes.button}
+                >
+                  Global Chat
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component={Link}
+                  to="/notes"
+                  className={classes.button}
+                >
+                  Note
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </Box>
+      </Container>
+    </>
   );
 }
 
-export default Home;
+const mapStateToProps = (state) => ({
+  username: state.auth?.user?.name,
+});
+
+// Compose Redux functions with component functions
+export default compose(connect(mapStateToProps)(Home));
