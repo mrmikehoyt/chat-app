@@ -1,33 +1,39 @@
 const users = [];
 
-const addUser = ({ id, name}) => {
-  name = name.trim().toLowerCase();
-
-  const existingUser = users.find((user) => user.name === name);
-
-  if (!name) {
-    return { error: 'Username are required.' };
-  }
-
-  const user = { id, name };
-
-  if (!existingUser) {
-    users.push(user);
-  }
-
-  //return user  that was just added
-  return { user };
+const generateUser = () => {
+  const userNum = Math.round(Math.random() * 1000);
+  const userName = `User ${userNum}`;
+  return userName;
 }
 
-const removeUser = (id) => {
-  const index = users.findIndex((user) => user.id === id);
-
-  if(index !== -1) return users.splice(index, 1)[0];
+const getUsers = () => {
+  return users;
 }
 
-const getUser = (id) => users.find((user) => user.id === id);
-const getAllUsers = () =>  (users);
+const addUser = (socket) => {
+  const createdUser = generateUser();
+  const userIndex = users.findIndex((user) => user.name === createdUser);
+  if (userIndex >= 0) {
+    addUser(socket);
+  } else {
+    users.push({
+      socketId: socket.id,
+      name: createdUser,
+      joined: new Date(socket.handshake.time).getTime()
+    });
+  }
+  return createdUser;
+}
+
+const removeUser = (socketId) => {
+  const userIndex = users.findIndex((user) => user.socketId === socketId);
+  if (userIndex >= 0) {
+      const userName = users[userIndex].name;
+      users.splice(userIndex, 1);
+      return `User with name ${userName} has left the chat`;
+  }
+  return `User with socketId ${socketId} not found`;
+}
 
 
-
-module.exports = { addUser, removeUser, getUser, getAllUsers };
+module.exports = { addUser, getUsers, removeUser };

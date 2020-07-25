@@ -5,9 +5,14 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const path = require('path');
 const socketio = require('socket.io');
-const { addUser, removeUser, getUser, getAllUsers } = require('./utils/users');
 
+// Routes
 const routes = require('./routes');
+
+// Chats imports
+const createMessage = require('./chat/creator/message');
+const messageUtils = require('./chat/message');
+const userUtils = require('./chat/user');
 
 const app = express();
 
@@ -41,36 +46,40 @@ const PORT = process.env.PORT || 3001;
 const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 const io = socketio(server);
 
-io.on('connect', (socket) => {
-  socket.on('join', ({ name}, callback) => {
-    const { error, user } = addUser({ id: socket.id, name });
+io.on('connection', (socket) => {
+  // Create a chat user
+  const user = userUtils.addUser(socket);
 
-    if(error) return callback(error);
+  socket.emit('action', { type: 'WS_SET_USERNAME_SUCCESS', payload: { username: user }});
+  socket.emit("action", { type: "WS_SOCKET_ID", payload: { socketId: socket.id }});
 
-    socket.emit('message', { user: '', text: `${user.name}, welcome to the global chat room.`});
-    socket.broadcast.emit('message', { user: '', text: `${user.name} has joined!` });
-
-    io.emit('roomData', {  users: getAllUsers() });
-
-    callback();
+  socket.on('connected', () => {
+    io.emit('congrats');
   });
 
-  socket.on('sendMessage', (message, callback) => {
-    const user = getUser(socket.id);
-    console.log(user);
-
-    io.emit('message', { user: user.name, text: message });
-
-    callback();
+  socket.on('chat message', (message) => {
+    const added = messageUtils.addMessage(message);
+    io.emit('message', message);
   });
 
-  socket.on('disconnect', () => {
-    const user = removeUser(socket.id);
+  socket.on('disconnect', (reason) => {
+    console.log('Disconnect for:', reason)
+    const response = userUtils.removeUser(socket.id);
+    const message = createMessage(response);
+    socket.broadcast.emit("broadcast", message);
+  });
 
-    if(user) {
-      io.emit('message', { user: '', text: `${user.name} has left.` });
-      io.emit('roomData', { users: getAllUsers()})
+  socket.on("action", (action) => {
+    switch (action.type) {
+      case 'WS_SEND_MESSAGE':
+        const {message} = action.payload;
+        io.emit("action", {
+            type: "WS_RECEIVE_MESSAGE",
+            payload: {message: message}
+        });
+      default:
+        break;
     }
-  })
+  });
 });
 

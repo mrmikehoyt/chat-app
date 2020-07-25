@@ -1,89 +1,92 @@
-/* eslint-disable no-alert */
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core';
-import io from 'socket.io-client';
+/* eslint-disable no-shadow */
+import React from 'react';
+import {
+  makeStyles,
+  Box,
+} from '@material-ui/core';
 import { connect } from 'react-redux';
-import SideBar from './sidebar';
-import Input from './input';
-import Header from '../../components/Header';
-import Messages from '../../components/Messages';
+import { v4 } from 'uuid';
+import { compose } from 'redux';
 
-let socket;
+import Header from '../../components/Header';
+import ChatMessageList from '../../components/ChatMessageList';
+import ChatInput from '../../components/ChatInput';
+import { sendMessage } from '../../actions/chatAction';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    padding: theme.spacing(2),
+  },
   outerContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '100vh',
+    height: 'calc(100vh - 120px)',
   },
-  container: {
+  chat: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    background: theme.palette.background.paper,
-    height: '80%',
-    width: '60%',
+    width: '80%',
+  },
+  list: {
+    display: 'flex',
+  },
+  input: {
+    display: 'flex',
   },
 }));
 
-const Chat = ({ user }) => {
+const Chat = ({
+  socketId,
+  messages,
+  username,
+  sendMessage,
+}) => {
   const classes = useStyles();
-  const [name, setName] = useState('');
-  const [users, setUsers] = useState('');
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
 
-  const ENDPOINT = 'http://localhost:3001';
-
-  useEffect(() => {
-    if (user) {
-      const Name = user;
-      socket = io(ENDPOINT);
-      setName(Name);
-
-      socket.emit('join', { Name }, (error) => {
-        if (error) {
-          alert(error);
-        }
-      });
-    }
-  }, [ENDPOINT, user]);
-
-  useEffect(() => {
-    socket.on('message', (itemMessage) => {
-      // add incoming message to messages list
-      setMessages((itemMessages) => [...itemMessages, itemMessage]);
-    });
-
-    socket.on('roomData', ({ users: roomUsers }) => {
-      setUsers(roomUsers);
-    });
-  }, []);
-
-  const sendMessage = (event) => {
-    event.preventDefault();
-
-    if (message) {
-      socket.emit('sendMessage', message, () => setMessage(''));
-    }
+  const handleInputMessage = (message) => {
+    const newMessage = {
+      author: username,
+      id: v4(),
+      time: new Date().getTime(),
+      message,
+      socketId,
+    };
+    sendMessage(newMessage);
   };
 
   return (
-    <div className={classes.outerContainer}>
-      <div className={classes.container}>
-        <Header />
-        <Messages messages={messages} name={name} />
-        <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
+    <>
+      <Header title="Chat" />
+      <div className={classes.outerContainer}>
+        <div className={classes.chat}>
+          <Box className={classes.list}>
+            <ChatMessageList messages={messages} socketId={socketId} />
+          </Box>
+          <Box className={classes.input}>
+            <ChatInput onSubmit={handleInputMessage} />
+          </Box>
+        </div>
       </div>
-      <SideBar users={users} />
-    </div>
+    </>
   );
 };
 
+// Redux to this component props
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  user: state.auth.user?.name,
+  messages: state.chat.messages,
+  socketId: state.chat.socketId,
+  username: state.auth?.user?.name,
 });
 
-export default connect(mapStateToProps)(Chat);
+// Dispatch values to redux state
+const mapDispatchToProps = (dispatch) => ({
+  sendMessage: (message) => dispatch(sendMessage(message)),
+});
+
+// Compose Redux functions with component functions
+export default compose(connect(mapStateToProps, mapDispatchToProps)(Chat));
