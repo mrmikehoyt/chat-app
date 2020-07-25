@@ -8,7 +8,6 @@ import {
   Home,
   Message,
   Note,
-  Settings,
 } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 
@@ -50,13 +49,6 @@ function Navigation() {
         label="Notes"
         value="notes"
         icon={<Note />}
-      />
-      <BottomNavigationAction
-        component={Link}
-        to="/settings"
-        label="Settings"
-        value="settings"
-        icon={<Settings />}
       />
     </BottomNavigation>
   );
